@@ -36,6 +36,11 @@ struct Card
     {
         return {static_cast<char>(par), static_cast<char>(suit)};
     }
+
+    bool operator==(Card card)
+    {
+        return (par == card.par) && (suit == card.suit);
+    }
 };
 
 

@@ -3,8 +3,15 @@
 #include "headers\solitaireMedichi.h"
 
 int main() {
+    int deckConstPositions = 3;
     Deck36 deck;
-    deck.Shuffle(7);
+    deck.Shuffle(7, deckConstPositions);
+    deck.Set(0, {Par::Jack, Suit::Diamonds});
+    deck.Set(1, {Par::Nine, Suit::Spades});
+    deck.Set(2, {Par::Ace, Suit::Diamonds});
+//    deck.Print();
+//    std::cout << std::boolalpha << deck.isCorrect() << std::endl;
+//    deck.Shuffle(7, deckConstPositions);
 
 //    deck.cards[0] = {Par::Jack, Suit::Diamonds};
 //    deck.cards[1] = {Par::Nine, Suit::Spades};
@@ -50,7 +57,7 @@ int main() {
     {
         result = PlaySolitaire(deck);
         if (!result.empty()) break;
-        deck.Shuffle(7);
+        deck.Shuffle(7, deckConstPositions);
     }
 
     if (i == n)
@@ -59,6 +66,7 @@ int main() {
     }
     else
     {
+        deck.Print();
         std::cout << "Iteration: " << i << std::endl;
         std::cout << result << std::endl;
     }

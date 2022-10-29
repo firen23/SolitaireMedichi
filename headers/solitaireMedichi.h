@@ -58,9 +58,9 @@ std::string PlaySolitaire(Deck36 &deck)
     std::vector<std::deque<Card>> process;
 //    std::vector<std::deque<Card>> result;
 
-    process.push_back(std::deque<Card> { deck.cards[deck.number_of_cards - 1] });
-    process.push_back(std::deque<Card> { deck.cards[deck.number_of_cards - 2] });
-    process.push_back(std::deque<Card> { deck.cards[deck.number_of_cards - 3] });
+    process.push_back(std::deque<Card> { deck[0] });
+    process.push_back(std::deque<Card> { deck[1] });
+    process.push_back(std::deque<Card> { deck[2] });
 
     for (auto deque : process)
     {
@@ -73,10 +73,10 @@ std::string PlaySolitaire(Deck36 &deck)
         stringResult += " ] [";
     }
 
-    for (int i = deck.number_of_cards - 4; i >= 0; i--)
+    for (int i = 3; i < deck.Size(); i++)
     {
-        process.push_back(std::deque<Card> { deck.cards[i] });
-        stringResult += ' ' + deck.cards[i].to_string();
+        process.push_back(std::deque<Card> { deck[i] });
+        stringResult += ' ' + deck[i].to_string();
 
         if (IsDevelops((process.end()-3)->back(), (process.end()-1)->back()))
         {
