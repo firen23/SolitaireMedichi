@@ -24,64 +24,47 @@ void Collapse(std::vector<std::deque<Card>> &process, Iter pos1, Iter pos2) // r
     process.erase(pos2);
 }
 
-void PrintMidProcess(std::vector<std::deque<Card>> &process)
+std::string GetResultString(std::vector<std::deque<Card>> &result)
 {
-    std::cout << "------------" << std::endl;
-    for (std::deque<Card> deque : process)
+    std::string resultString;
+    for (auto deque : result)
     {
-        for (Card card : deque)
-        {
-            std::cout << card.to_string() << ' ';
-        }
-        std::cout << std::endl;
-    }
-}
-
-std::string PrintResult(std::vector<std::deque<Card>> &process)
-{
-    std::string result;
-    for (auto deque : process)
-    {
-        result += "[";
+        resultString += "[";
         for (auto card : deque)
         {
-            result += ' ' + card.to_string();
+            resultString += ' ' + card.to_string();
         }
-        result += " ]";
+        resultString += " ]";
     }
-    return result;
+    return resultString;
 }
 
 std::string PlaySolitaire(Deck36 &deck)
 {
-    std::string stringResult("[");
     std::vector<std::deque<Card>> process;
-//    std::vector<std::deque<Card>> result;
+    std::vector<std::deque<Card>> result;
 
     process.push_back(std::deque<Card> { deck[0] });
     process.push_back(std::deque<Card> { deck[1] });
     process.push_back(std::deque<Card> { deck[2] });
 
-    for (auto deque : process)
-    {
-        stringResult += ' ' + deque.front().to_string();
-    }
+    result.push_back({ deck[0], deck[1], deck[2] });
 
     if (IsDevelops(process.front().back(), process.back().back())) // ?
     {
         Collapse(process, process.begin(), process.begin()+1);
-        stringResult += " ] [";
+        result.push_back({});
     }
 
     for (int i = 3; i < deck.Size(); i++)
     {
         process.push_back(std::deque<Card> { deck[i] });
-        stringResult += ' ' + deck[i].to_string();
+        result.back().push_back(deck[i]);
 
         if (IsDevelops((process.end()-3)->back(), (process.end()-1)->back()))
         {
             Collapse(process, process.end()-3, process.end()-2);
-            stringResult += " ] [";
+            result.push_back({});
             bool isDevelops = true;
 
             while (isDevelops)
@@ -101,14 +84,16 @@ std::string PlaySolitaire(Deck36 &deck)
         }
     }
 
-    stringResult += " ]";
-
     if (process.size() > 2)
     {
-        stringResult = std::string();
+        result.clear();
+    }
+    else
+    {
+        result.pop_back();
     }
 
-    return stringResult;
+    return GetResultString(result);
 }
 
 #endif //SOLITAIREMEDICHI_SOLITAREMEDICHI_H
